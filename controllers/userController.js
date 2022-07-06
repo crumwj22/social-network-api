@@ -31,7 +31,7 @@ module.exports = {
   },
 
   // update user by id
-  updateUsers(req, res) {
+  updateUser(req, res) {
     User.findOneAndUpdate({ _id: req.params.userId }, body, {
       new: true,
       runValidators: true,
@@ -45,7 +45,7 @@ module.exports = {
   },
 
   // delete user by id
-  deleteUsers(req, res) {
+  deleteUser(req, res) {
     User.findOneAndDelete({ _id: req.params.userId })
       .then((user) =>
         !user

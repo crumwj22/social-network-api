@@ -1,4 +1,4 @@
-const { Thought, User } = require("../models");
+const { Thought } = require("../models");
 
 module.exports = {
   // Get all users
@@ -20,7 +20,7 @@ module.exports = {
       .catch((err) => res.status(500).json(err));
   },
   postThought(req, res) {
-    User.create(req.body)
+    Thought.create(req.body)
       .then((thought) => res.json(thought))
       .then(() => res.json({ message: "thought created!" }))
       .catch((err) => res.status(500).json(err));

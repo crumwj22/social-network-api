@@ -13,6 +13,7 @@ const userSchema = new Schema(
       type: String,
       required: true,
       unique: true,
+      // Regex to validate email
       match: [/.+\@.+\..+/, "invalid email address"],
     },
     thoughts: [
@@ -33,6 +34,7 @@ const userSchema = new Schema(
       getters: true,
       virtuals: true,
     },
+    id: false,
   }
 );
 userSchema.virtual("friendCount").get(function () {

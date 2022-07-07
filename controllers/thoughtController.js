@@ -1,4 +1,4 @@
-const { Thought } = require("../models");
+const { Thought, User } = require("../models");
 
 module.exports = {
   // Get all users
@@ -10,7 +10,7 @@ module.exports = {
 
   // get thought by id
   getSingleThought(req, res) {
-    Thought.findOne({ _id: req.params.userId })
+    Thought.findOne({ _id: req.params.thoughtId })
       .select("-__v")
       .populate({ path: "reactions", select: "-__v" })
       .then((thought) =>
@@ -31,7 +31,7 @@ module.exports = {
 
   // update thought by id
   updateThought(req, res) {
-    Thought.findOneAndUpdate({ _id: req.params.userId }, body, {
+    Thought.findOneAndUpdate({ _id: req.params.thoughtId }, req.body, {
       new: true,
       runValidators: true,
     })
@@ -47,7 +47,7 @@ module.exports = {
 
   // delete thought by id
   deleteThought(req, res) {
-    Thought.findOneAndDelete({ _id: req.params.userId })
+    Thought.findOneAndDelete({ _id: req.params.thoughtId })
       .then((thought) =>
         !thought
           ? res.status(404).json({ message: "No user with that ID" })
@@ -60,7 +60,7 @@ module.exports = {
   addReaction(req, res) {
     Thought.findOneAndUpdate(
       { _id: req.params.thoughtId },
-      { $addToSet: { reactions: body } },
+      { $addToSet: { reactions: req.body } },
       { new: true, runValidators: true }
     )
       .select("-__v")
@@ -75,9 +75,9 @@ module.exports = {
 
   // delete reaction
   deleteReaction(req, res) {
-    Thought.findOneAndDelete(
-      { _id: req.params.userId },
-      { $pull: { reactions: { reactionId: params.reactionId } } },
+    Thought.findOneAndUpdate(
+      { _id: req.params.thoughtId },
+      { $pull: { reactions: { reactionId: req.params.reactionId } } },
       { new: true }
     )
       .then((user) =>
